@@ -1,8 +1,6 @@
 MCLib
 =====
 
-**While the code isn't there, it'll exist either tomorrow, or in a couple of years...**
-
 A powerful code injection framework that allows for easy instrumenting and transforming of any class.
 
 You can use this library to inject & modify code dynamically on the fly via it's own injected ClassLoader.
