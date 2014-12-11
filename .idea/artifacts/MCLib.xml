@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="MCLib">
+    <output-path>$PROJECT_DIR$/out/artifacts/MCLib</output-path>
+    <root id="archive" name="MCLib.jar">
+      <element id="module-output" name="MCLib" />
+    </root>
+  </artifact>
+</component>

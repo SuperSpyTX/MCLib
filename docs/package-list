@@ -1,0 +1,16 @@
+se.jkrau.mclib
+se.jkrau.mclib.craft
+se.jkrau.mclib.craft.asm
+se.jkrau.mclib.craft.asm.basic
+se.jkrau.mclib.craft.asm.orm
+se.jkrau.mclib.craft.orm
+se.jkrau.mclib.craft.orm.annotations
+se.jkrau.mclib.loader
+se.jkrau.mclib.org.objectweb.asm
+se.jkrau.mclib.org.objectweb.asm.commons
+se.jkrau.mclib.org.objectweb.asm.signature
+se.jkrau.mclib.org.objectweb.asm.tree
+se.jkrau.mclib.org.objectweb.asm.tree.analysis
+se.jkrau.mclib.org.objectweb.asm.util
+se.jkrau.mclib.org.objectweb.asm.xml
+se.jkrau.mclib.utils
