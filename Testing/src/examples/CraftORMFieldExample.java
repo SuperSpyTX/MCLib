@@ -8,7 +8,7 @@ public class CraftORMFieldExample extends CraftORM {
 
 	@Before
 	public static void main(String[] args) {
-		testField = "I changed it!";
+		testField = "I killed kenny!";
 	}
 
 }

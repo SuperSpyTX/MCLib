@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+// WHILE WINGS OF GLORY - I'M STUCK INSIDE.....
 public class ASMDriver implements ORMDriver {
 
 	String originalClassName;
@@ -40,7 +41,6 @@ public class ASMDriver implements ORMDriver {
 				cr.accept(cn, 0);
 			}
 
-			// TODO: create a MethodNode remapper that remaps all field/method instruction calls that refer to the class itself to the target class (when passed over!)
 
 			for (MethodNode mn : cn.methods) {
 				if (mn.invisibleAnnotations != null && mn.invisibleAnnotations.size() > 0) {
@@ -117,6 +117,10 @@ public class ASMDriver implements ORMDriver {
 				if (before.containsKey(mn.name + mn.desc)) {
 					MethodNode inject = before.get(mn.name + mn.desc);
 
+                    MethodNode newInject = new MethodNode();
+                    inject.accept(new ASMMethodRemapper(newInject, this.originalClassName, this.targetClassName));
+                    inject = newInject;
+
 					for (int i = 0; i < mn.instructions.toArray().length; i++) {
 						AbstractInsnNode insnNode = mn.instructions.get(i);
 						if (insnNode instanceof LabelNode) {
@@ -126,12 +130,20 @@ public class ASMDriver implements ORMDriver {
 					}
 
 					mn.instructions.resetLabels();
-					mn.tryCatchBlocks.addAll(inject.tryCatchBlocks);
-					mn.exceptions.addAll(inject.exceptions);
+                    if (inject.tryCatchBlocks != null) {
+                        mn.tryCatchBlocks.addAll(inject.tryCatchBlocks);
+                    }
+                    if (inject.exceptions != null) {
+                        mn.exceptions.addAll(inject.exceptions);
+                    }
 				} else if (after.containsKey(mn.name + mn.desc)) {
 					MethodNode inject = after.get(mn.name + mn.desc);
 
-					for (int i = mn.instructions.toArray().length - 1; i > -1; i--) {
+                    MethodNode newInject = new MethodNode();
+                    inject.accept(new ASMMethodRemapper(newInject, this.originalClassName, this.targetClassName));
+                    inject = newInject;
+
+                    for (int i = mn.instructions.toArray().length - 1; i > -1; i--) {
 						AbstractInsnNode insnNode = mn.instructions.get(i);
 						if (ClassUtils.getOpcode(insnNode.getOpcode()).contains("RETURN")) {
 							mn.instructions.insertBefore(mn.instructions.get(i), inject.instructions);
@@ -140,17 +152,33 @@ public class ASMDriver implements ORMDriver {
 					}
 
 					mn.instructions.resetLabels();
-					mn.tryCatchBlocks.addAll(inject.tryCatchBlocks);
-					mn.exceptions.addAll(inject.exceptions);
+                    if (inject.tryCatchBlocks != null) {
+                        mn.tryCatchBlocks.addAll(inject.tryCatchBlocks);
+                    }
+                    if (inject.exceptions != null) {
+                        mn.exceptions.addAll(inject.exceptions);
+                    }
 				} else if (replace.containsKey(mn.name + mn.desc)) {
 					MethodNode inject = replace.get(mn.name + mn.desc);
 
-					mn.instructions.clear();
-					mn.tryCatchBlocks.clear();
-					mn.exceptions.clear();
+                    MethodNode newInject = new MethodNode();
+                    inject.accept(new ASMMethodRemapper(newInject, this.originalClassName, this.targetClassName));
+                    inject = newInject;
+
+                    mn.instructions.clear();
+                    if (inject.tryCatchBlocks != null) {
+                        mn.tryCatchBlocks.clear();
+                    }
+                    if (inject.exceptions != null) {
+                        mn.exceptions.clear();
+                    }
 					mn.instructions.add(inject.instructions);
-					mn.tryCatchBlocks.addAll(inject.tryCatchBlocks);
-					mn.exceptions.addAll(inject.exceptions);
+                    if (inject.tryCatchBlocks != null) {
+                        mn.tryCatchBlocks.addAll(inject.tryCatchBlocks);
+                    }
+                    if (inject.exceptions != null) {
+                        mn.exceptions.addAll(inject.exceptions);
+                    }
 				} else if (line.containsKey(mn.name + mn.desc)) {
 					Map.Entry<Integer, MethodNode> entry = line.get(mn.name + mn.desc);
 					int lineNum = entry.getKey();
@@ -158,7 +186,11 @@ public class ASMDriver implements ORMDriver {
 					MethodNode inject = entry.getValue();
 					boolean injected = false;
 
-					if (lineNum < 0) {
+                    MethodNode newInject = new MethodNode();
+                    inject.accept(new ASMMethodRemapper(newInject, this.originalClassName, this.targetClassName));
+                    inject = newInject;
+
+                    if (lineNum < 0) {
 						lineNum *= -1;
 					}
 
@@ -176,7 +208,6 @@ public class ASMDriver implements ORMDriver {
 
 					// If the line number was not found, let's resort to @After or @Before's behavior.
 					// Unless it was before!
-					// TODO: Code duplication, except within the same method...is this proper practice?
 					if (!injected) {
 						if (after) {
 							for (int i = mn.instructions.toArray().length - 1; i > -1; i--) {
@@ -198,8 +229,12 @@ public class ASMDriver implements ORMDriver {
 					}
 
 					mn.instructions.resetLabels();
-					mn.tryCatchBlocks.addAll(inject.tryCatchBlocks);
-					mn.exceptions.addAll(inject.exceptions);
+                    if (inject.tryCatchBlocks != null) {
+                        mn.tryCatchBlocks.addAll(inject.tryCatchBlocks);
+                    }
+                    if (inject.exceptions != null) {
+                        mn.exceptions.addAll(inject.exceptions);
+                    }
 				}
 
 			}

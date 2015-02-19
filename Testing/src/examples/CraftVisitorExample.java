@@ -24,11 +24,11 @@ public class CraftVisitorExample extends CraftVisitor {
 
 		public void visitCode() {
 			Label l2 = new Label();
-			mv.visitLabel(l2);
-			mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-			mv.visitLdcInsn("Hello World of Small Paineses!");
-			mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
-			mv.visitCode();
+			super.visitLabel(l2);
+			super.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+			super.visitLdcInsn("Hello World of Small Paineses!");
+			super.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
+			super.visitCode();
 		}
 	}
 }

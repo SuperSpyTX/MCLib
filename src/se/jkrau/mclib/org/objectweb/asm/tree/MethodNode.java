@@ -539,6 +539,10 @@ public class MethodNode extends MethodVisitor {
     @Override
     public void visitTryCatchBlock(final Label start, final Label end,
             final Label handler, final String type) {
+        /* Bugfix */
+        if (tryCatchBlocks == null) {
+            tryCatchBlocks = new ArrayList<TryCatchBlockNode>();
+        }
         tryCatchBlocks.add(new TryCatchBlockNode(getLabelNode(start),
                 getLabelNode(end), getLabelNode(handler), type));
     }
@@ -568,6 +572,10 @@ public class MethodNode extends MethodVisitor {
     public void visitLocalVariable(final String name, final String desc,
             final String signature, final Label start, final Label end,
             final int index) {
+        /* Bug fix */
+        if (localVariables == null) {
+            localVariables = new ArrayList<LocalVariableNode>();
+        }
         localVariables.add(new LocalVariableNode(name, desc, signature,
                 getLabelNode(start), getLabelNode(end), index));
     }

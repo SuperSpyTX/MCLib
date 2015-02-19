@@ -13,11 +13,11 @@ public class CraftORMExample extends CraftORM {
 		if (args.length > 0) {
 			System.out.println("Oh shit dude there's arguments!");
 		}
-		/*String declared = "Penis";
+		String declared = "Penis";
 		try {
 			throw new Exception("Fuck yes?");
 		} catch (Exception e) {
 			System.out.println("Yes caught a fuckin error!");
-		}*/
+		}
 	}
 }

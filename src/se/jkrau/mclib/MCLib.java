@@ -3,6 +3,7 @@ package se.jkrau.mclib;
 import se.jkrau.mclib.craft.Craft;
 import se.jkrau.mclib.craft.MultiEntryCraft;
 import se.jkrau.mclib.loader.Filter;
+import se.jkrau.mclib.loader.InjectedClassLoader;
 import se.jkrau.mclib.loader.Loader;
 import se.jkrau.mclib.utils.ClassUtils;
 
@@ -29,8 +30,9 @@ public class MCLib {
 	private List<Craft> craftList;
 	private Map<String, Craft> craftMap;
 	private Loader loader;
+    private InjectedClassLoader classLoader;
 
-	/**
+    /**
 	 * Shortcut constructor for classes with a public main method (defaults for main(String[] args))
 	 *
 	 * @param mainClass the class name with the above method
@@ -64,18 +66,6 @@ public class MCLib {
 	 */
 	public void craft(Craft craft) {
 		craftList.add(craft);
-	}
-
-	/**
-	 * Attach a {@link se.jkrau.mclib.craft.Craft} to a single class, then add it to MCLib for dynamic code injection.<br /><br />
-	 *
-	 * @deprecated This only supports only one class, and doesn't support duplicate classes.  Please use {@link #craft(se.jkrau.mclib.craft.Craft, String...)} instead.
-	 * @param className String with class name to target
-	 * @param craft {@link se.jkrau.mclib.craft.Craft}
-	 */
-	@Deprecated
-	public void craft(String className, Craft craft) {
-		craftMap.put(className, craft);
 	}
 
 	/**
@@ -147,10 +137,14 @@ public class MCLib {
 	/**
 	 * Creates the {@link se.jkrau.mclib.loader.Loader} with all the arguments provided so far.<br /><br />
 	 *
+     * <strong>Warning: Without invoking this method, any injected crafts will not take effect!</strong><br />
 	 * <strong>Warning:</strong> Any new craft calls will require this method to be invoked again!
 	 */
 	public void createLoader() {
-		this.loader = new Loader(Thread.currentThread().getContextClassLoader(), this);
+        if (this.loader == null) {
+            this.loader = new Loader(this);
+        }
+		this.classLoader = new InjectedClassLoader(Thread.currentThread().getContextClassLoader(), loader);
 	}
 
 	/**
@@ -194,7 +188,7 @@ public class MCLib {
 	 * @throws IllegalAccessException
 	 */
 	public void run(Object entryInstance, Object... entryArgs) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-		Class<?> clazz = (this.loader != null ? this.loader.loadClass(entryClass) : Class.forName(entryClass));
+		Class<?> clazz = (this.classLoader != null ? this.classLoader.loadClass(entryClass) : Class.forName(entryClass));
 		Method method = clazz.getMethod(entryMethod, ClassUtils.getClassArray(entryArgs));
 		method.invoke(entryInstance, entryArgs);
 	}

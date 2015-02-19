@@ -6,10 +6,12 @@ import se.jkrau.mclib.org.objectweb.asm.ClassVisitor;
 import java.io.ByteArrayInputStream;
 
 /**
- * A craft specialized to take your code in the class (extending this one) and allow for dynamic code injection, just by writing your own
+ * A craft created of special Illuminati Black Magic consisted of women.
+ *
+ * This class is specialized to take your code in the class (extending this one) and allow for dynamic code injection, just by writing your own
  * java code! This does not support local variables defined in the method but it supports the parameters, the fields in the class
- * (tested via reflection, which works directly in the code!) and the inherited methods and fields via reflection (sadly).
- * Hopefully in the future, CraftORM can support a bit more.  You must define an annotation for the method.
+ * (natively works even when defined in class) and the inherited methods and fields.
+ * You must define an annotation for the method.
  * See {@link se.jkrau.mclib.craft.orm.annotations} for more info.
  *
  * @see se.jkrau.mclib.craft.orm.annotations
@@ -34,12 +36,12 @@ public class CraftORM implements Craft {
 		if (ormType == ORMType.ASM) {
 			ormDriver = new se.jkrau.mclib.craft.asm.orm.ASMDriver();
 		} else {
-			throw new IllegalStateException("ORM type passed in argument is invalid!");
+			throw new IllegalStateException("ORM type passed... your argument is invalid!"); // Totally not a niceme.me
 		}
 
-		String currentClassName = getClass().getName();
-		if (currentClassName.equals("se.jkrau.mclib.craft.orm.CraftORM")) {
-			throw new IllegalStateException("Instantiating upon itself is not allowed.");
+		String currentClassName = getClass().getName().replace(".", "/");
+		if (currentClassName.equals(CraftORM.class.getName().replace(".", "/"))) {
+			throw new IllegalStateException("Instantiation upon root CraftORM class is not allowed.");
 		}
 
 		ormDriver.setup(currentClassName, preVisitor, postVisitor);

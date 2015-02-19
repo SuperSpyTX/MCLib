@@ -9,6 +9,6 @@
  * Obviously, I have made some modifications to improve ASM's functionality a little bit.  For example, see {@link se.jkrau.mclib.utils.ClassUtils#getOpcode(int)}
  *
  * @author Joe
- * @version 1.3
+ * @version 1.4
  */
 package se.jkrau.mclib;

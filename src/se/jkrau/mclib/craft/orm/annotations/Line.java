@@ -6,7 +6,7 @@ package se.jkrau.mclib.craft.orm.annotations;
  */
 public @interface Line {
 	/**
-	 * Returns the line number in the method instructions.
+	 * The line number in the method instructions.
 	 * @return the line number.
 	 */
 	public int number();

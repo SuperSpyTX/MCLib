@@ -11,13 +11,7 @@ This could be used to make Minecraft mods, without the need to wait for the next
 Why am I releasing this?
 ==============================
 
-**Q:** You would think, a neat little framework that has quite a bit of power, is being released to the public.  Why would you release it instead of keeping it to yourself.
-
-**A:** I'm not sure why either.  The reason must be.. Well I quit minecraft.  It sucks.  I used this library to make a minecraft client but just kind of stopped afterward since it got too awkward.
-
-Ultimately, I enjoyed most of the time dissecting the game into little pieces and having fun with the game code to make crazy things out of it, but things can get boring after you see these giant networks taking over.  Now all of the sudden it's become too difficult to really do anything anymore.
-
-I hope somebody finds fun use like I did.  It's kind of a magical work of art that I did this summer.
+Because everybody should have a fun time making stuff with this!
 
 Reason why I packed ASM in MCLib
 -------------------------------------
