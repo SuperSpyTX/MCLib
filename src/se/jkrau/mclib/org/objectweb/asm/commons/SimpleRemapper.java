@@ -35,35 +35,35 @@ import java.util.Map;
 
 /**
  * A {@link Remapper} using a {@link Map} to define its mapping.
- * 
+ *
  * @author Eugene Kuleshov
  */
 public class SimpleRemapper extends Remapper {
 
-    private final Map<String, String> mapping;
+	private final Map<String, String> mapping;
 
-    public SimpleRemapper(Map<String, String> mapping) {
-        this.mapping = mapping;
-    }
+	public SimpleRemapper(Map<String, String> mapping) {
+		this.mapping = mapping;
+	}
 
-    public SimpleRemapper(String oldName, String newName) {
-        this.mapping = Collections.singletonMap(oldName, newName);
-    }
+	public SimpleRemapper(String oldName, String newName) {
+		this.mapping = Collections.singletonMap(oldName, newName);
+	}
 
-    @Override
-    public String mapMethodName(String owner, String name, String desc) {
-        String s = map(owner + '.' + name + desc);
-        return s == null ? name : s;
-    }
+	@Override
+	public String mapMethodName(String owner, String name, String desc) {
+		String s = map(owner + '.' + name + desc);
+		return s == null ? name : s;
+	}
 
-    @Override
-    public String mapFieldName(String owner, String name, String desc) {
-        String s = map(owner + '.' + name);
-        return s == null ? name : s;
-    }
+	@Override
+	public String mapFieldName(String owner, String name, String desc) {
+		String s = map(owner + '.' + name);
+		return s == null ? name : s;
+	}
 
-    @Override
-    public String map(String key) {
-        return mapping.get(key);
-    }
+	@Override
+	public String map(String key) {
+		return mapping.get(key);
+	}
 }

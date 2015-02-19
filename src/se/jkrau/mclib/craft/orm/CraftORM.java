@@ -7,7 +7,7 @@ import java.io.ByteArrayInputStream;
 
 /**
  * A craft created of special Illuminati Black Magic consisted of women.
- *
+ * <p/>
  * This class is specialized to take your code in the class (extending this one) and allow for dynamic code injection, just by writing your own
  * java code! This does not support local variables defined in the method but it supports the parameters, the fields in the class
  * (natively works even when defined in class) and the inherited methods and fields.

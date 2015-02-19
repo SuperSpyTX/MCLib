@@ -4,6 +4,7 @@ import java.util.List;
 
 /**
  * Internal class used to provide multiple {@link Craft} entries for a single class.
+ *
  * @author Joe
  */
 public class MultiEntryCraft implements Craft {
@@ -23,7 +24,7 @@ public class MultiEntryCraft implements Craft {
 
 	/**
 	 * {@inheritDoc}
-	 **/
+	 */
 	public byte[] process(byte[] in, String className) {
 		for (Craft craft : craftList) {
 			byte[] result = craft.process(in, className);

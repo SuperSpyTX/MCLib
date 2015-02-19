@@ -6,6 +6,7 @@ import java.io.InputStream;
 
 /**
  * The driver that performs all the magic.
+ *
  * @see se.jkrau.mclib.craft.orm.CraftORM
  */
 public interface ORMDriver {

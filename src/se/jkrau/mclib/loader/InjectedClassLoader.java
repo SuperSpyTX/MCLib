@@ -1,25 +1,23 @@
 package se.jkrau.mclib.loader;
 
-import se.jkrau.mclib.MCLib;
-import se.jkrau.mclib.craft.Craft;
 import se.jkrau.mclib.utils.ClassUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Map;
 
 /**
  * A {@link java.lang.ClassLoader} class that loads post-injected classes into the Java Virtual Machine.
+ *
  * @author Joe
  */
 public class InjectedClassLoader extends ClassLoader {
 
-    private Loader loader;
+	private Loader loader;
 
-    public InjectedClassLoader(ClassLoader parent, Loader loader) {
-        super(parent);
-        this.loader = loader;
-    }
+	public InjectedClassLoader(ClassLoader parent, Loader loader) {
+		super(parent);
+		this.loader = loader;
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -29,14 +27,14 @@ public class InjectedClassLoader extends ClassLoader {
 
 		byte[] array;
 		try {
-            // TODO: change deprecated API statement to something else.
+			// TODO: change deprecated API statement to something else.
 			array = sun.misc.IOUtils.readFully(classData, -1, true);
 
-            array = loader.injectClass(array, name);
+			array = loader.injectClass(array, name);
 
-            if (array == null) {
-                return super.loadClass(name);
-            }
+			if (array == null) {
+				return super.loadClass(name);
+			}
 		} catch (IOException e) {
 			return super.loadClass(name);
 		}

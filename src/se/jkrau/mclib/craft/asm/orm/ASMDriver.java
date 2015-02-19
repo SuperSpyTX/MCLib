@@ -1,8 +1,14 @@
 package se.jkrau.mclib.craft.asm.orm;
 
 import se.jkrau.mclib.craft.orm.ORMDriver;
-import se.jkrau.mclib.craft.orm.annotations.*;
-import se.jkrau.mclib.org.objectweb.asm.*;
+import se.jkrau.mclib.craft.orm.annotations.After;
+import se.jkrau.mclib.craft.orm.annotations.Before;
+import se.jkrau.mclib.craft.orm.annotations.Line;
+import se.jkrau.mclib.craft.orm.annotations.Replace;
+import se.jkrau.mclib.org.objectweb.asm.ClassReader;
+import se.jkrau.mclib.org.objectweb.asm.ClassVisitor;
+import se.jkrau.mclib.org.objectweb.asm.ClassWriter;
+import se.jkrau.mclib.org.objectweb.asm.Opcodes;
 import se.jkrau.mclib.org.objectweb.asm.tree.*;
 import se.jkrau.mclib.utils.ClassUtils;
 
@@ -117,9 +123,9 @@ public class ASMDriver implements ORMDriver {
 				if (before.containsKey(mn.name + mn.desc)) {
 					MethodNode inject = before.get(mn.name + mn.desc);
 
-                    MethodNode newInject = new MethodNode();
-                    inject.accept(new ASMMethodRemapper(newInject, this.originalClassName, this.targetClassName));
-                    inject = newInject;
+					MethodNode newInject = new MethodNode();
+					inject.accept(new ASMMethodRemapper(newInject, this.originalClassName, this.targetClassName));
+					inject = newInject;
 
 					for (int i = 0; i < mn.instructions.toArray().length; i++) {
 						AbstractInsnNode insnNode = mn.instructions.get(i);
@@ -130,20 +136,20 @@ public class ASMDriver implements ORMDriver {
 					}
 
 					mn.instructions.resetLabels();
-                    if (inject.tryCatchBlocks != null) {
-                        mn.tryCatchBlocks.addAll(inject.tryCatchBlocks);
-                    }
-                    if (inject.exceptions != null) {
-                        mn.exceptions.addAll(inject.exceptions);
-                    }
+					if (inject.tryCatchBlocks != null) {
+						mn.tryCatchBlocks.addAll(inject.tryCatchBlocks);
+					}
+					if (inject.exceptions != null) {
+						mn.exceptions.addAll(inject.exceptions);
+					}
 				} else if (after.containsKey(mn.name + mn.desc)) {
 					MethodNode inject = after.get(mn.name + mn.desc);
 
-                    MethodNode newInject = new MethodNode();
-                    inject.accept(new ASMMethodRemapper(newInject, this.originalClassName, this.targetClassName));
-                    inject = newInject;
+					MethodNode newInject = new MethodNode();
+					inject.accept(new ASMMethodRemapper(newInject, this.originalClassName, this.targetClassName));
+					inject = newInject;
 
-                    for (int i = mn.instructions.toArray().length - 1; i > -1; i--) {
+					for (int i = mn.instructions.toArray().length - 1; i > -1; i--) {
 						AbstractInsnNode insnNode = mn.instructions.get(i);
 						if (ClassUtils.getOpcode(insnNode.getOpcode()).contains("RETURN")) {
 							mn.instructions.insertBefore(mn.instructions.get(i), inject.instructions);
@@ -152,33 +158,33 @@ public class ASMDriver implements ORMDriver {
 					}
 
 					mn.instructions.resetLabels();
-                    if (inject.tryCatchBlocks != null) {
-                        mn.tryCatchBlocks.addAll(inject.tryCatchBlocks);
-                    }
-                    if (inject.exceptions != null) {
-                        mn.exceptions.addAll(inject.exceptions);
-                    }
+					if (inject.tryCatchBlocks != null) {
+						mn.tryCatchBlocks.addAll(inject.tryCatchBlocks);
+					}
+					if (inject.exceptions != null) {
+						mn.exceptions.addAll(inject.exceptions);
+					}
 				} else if (replace.containsKey(mn.name + mn.desc)) {
 					MethodNode inject = replace.get(mn.name + mn.desc);
 
-                    MethodNode newInject = new MethodNode();
-                    inject.accept(new ASMMethodRemapper(newInject, this.originalClassName, this.targetClassName));
-                    inject = newInject;
+					MethodNode newInject = new MethodNode();
+					inject.accept(new ASMMethodRemapper(newInject, this.originalClassName, this.targetClassName));
+					inject = newInject;
 
-                    mn.instructions.clear();
-                    if (inject.tryCatchBlocks != null) {
-                        mn.tryCatchBlocks.clear();
-                    }
-                    if (inject.exceptions != null) {
-                        mn.exceptions.clear();
-                    }
+					mn.instructions.clear();
+					if (inject.tryCatchBlocks != null) {
+						mn.tryCatchBlocks.clear();
+					}
+					if (inject.exceptions != null) {
+						mn.exceptions.clear();
+					}
 					mn.instructions.add(inject.instructions);
-                    if (inject.tryCatchBlocks != null) {
-                        mn.tryCatchBlocks.addAll(inject.tryCatchBlocks);
-                    }
-                    if (inject.exceptions != null) {
-                        mn.exceptions.addAll(inject.exceptions);
-                    }
+					if (inject.tryCatchBlocks != null) {
+						mn.tryCatchBlocks.addAll(inject.tryCatchBlocks);
+					}
+					if (inject.exceptions != null) {
+						mn.exceptions.addAll(inject.exceptions);
+					}
 				} else if (line.containsKey(mn.name + mn.desc)) {
 					Map.Entry<Integer, MethodNode> entry = line.get(mn.name + mn.desc);
 					int lineNum = entry.getKey();
@@ -186,11 +192,11 @@ public class ASMDriver implements ORMDriver {
 					MethodNode inject = entry.getValue();
 					boolean injected = false;
 
-                    MethodNode newInject = new MethodNode();
-                    inject.accept(new ASMMethodRemapper(newInject, this.originalClassName, this.targetClassName));
-                    inject = newInject;
+					MethodNode newInject = new MethodNode();
+					inject.accept(new ASMMethodRemapper(newInject, this.originalClassName, this.targetClassName));
+					inject = newInject;
 
-                    if (lineNum < 0) {
+					if (lineNum < 0) {
 						lineNum *= -1;
 					}
 
@@ -229,12 +235,12 @@ public class ASMDriver implements ORMDriver {
 					}
 
 					mn.instructions.resetLabels();
-                    if (inject.tryCatchBlocks != null) {
-                        mn.tryCatchBlocks.addAll(inject.tryCatchBlocks);
-                    }
-                    if (inject.exceptions != null) {
-                        mn.exceptions.addAll(inject.exceptions);
-                    }
+					if (inject.tryCatchBlocks != null) {
+						mn.tryCatchBlocks.addAll(inject.tryCatchBlocks);
+					}
+					if (inject.exceptions != null) {
+						mn.exceptions.addAll(inject.exceptions);
+					}
 				}
 
 			}

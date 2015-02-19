@@ -15,7 +15,7 @@ public abstract class CraftASM implements Craft {
 	public byte[] process(byte[] in, String className) {
 		ClassReader cr = new ClassReader(in);
 		ClassWriter cw = process(cr);
-		
+
 		if (cw == null) {
 			return null;
 		} else {

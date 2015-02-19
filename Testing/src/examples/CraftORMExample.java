@@ -1,9 +1,7 @@
 package examples;
 
 import se.jkrau.mclib.craft.orm.CraftORM;
-import se.jkrau.mclib.craft.orm.annotations.*;
-import se.jkrau.mclib.org.objectweb.asm.ClassVisitor;
-import se.jkrau.mclib.org.objectweb.asm.Opcodes;
+import se.jkrau.mclib.craft.orm.annotations.Before;
 
 public class CraftORMExample extends CraftORM {
 

@@ -2,12 +2,12 @@ package se.jkrau.mclib.craft.orm;
 
 /**
  * The type of {@link se.jkrau.mclib.craft.orm.ORMDriver} to use.  Usually you don't need to do anything with this class.
- * @see se.jkrau.mclib.craft.orm.CraftORM
+ *
  * @author Joe
+ * @see se.jkrau.mclib.craft.orm.CraftORM
  */
 public enum ORMType {
-	ASM(0),
-	;
+	ASM(0),;
 
 	int type;
 
