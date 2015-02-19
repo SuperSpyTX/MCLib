@@ -31,11 +31,10 @@ package se.jkrau.mclib.org.objectweb.asm.tree;
 
 import java.util.Map;
 
-import se.jkrau.mclib.o
-g.obje tweb.asm.Label;
-import se.jkrau.mclib.org.objec
+import se.jkrau.mclib.org.objectweb.asm.Label;
+import se.jkrau.mclib.org.objectweb.asm.MethodVisitor;
 
-eb.asm MethodVisitor;
+
 
 /**
  * An {@link AbstractInsnNode} that encapsulates a {@link Label}.
