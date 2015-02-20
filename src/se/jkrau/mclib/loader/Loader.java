@@ -50,6 +50,9 @@ public class Loader {
 		if (array == null || name.startsWith("java") || name.startsWith("sun") || !filter.allow(name)) {
 			return null;
 		}
+
+		name = name.replace(".", "/");
+
 		// Do we have crafts that accept every class loaded? Let's do that first.
 		if (craftArray.length > 0) {
 			for (Craft craft : craftArray) {

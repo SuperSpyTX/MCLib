@@ -114,7 +114,7 @@ public class ASMDriver implements ORMDriver {
 	@Override
 	public byte[] process(InputStream in, String className) {
 		try {
-			this.targetClassName = className.replace(".", "/");
+			this.targetClassName = className;
 			ClassReader cr = new ClassReader(in);
 			ClassNode cn = new ClassNode(Opcodes.ASM5);
 			cr.accept(cn, 0);
