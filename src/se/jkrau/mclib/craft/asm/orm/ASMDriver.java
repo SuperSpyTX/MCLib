@@ -47,8 +47,11 @@ public class ASMDriver implements ORMDriver {
 				cr.accept(cn, 0);
 			}
 
-
 			for (MethodNode mn : cn.methods) {
+				if (mn.name.equals("_clinit_")) {
+					mn.name = "<" + mn.name.substring(1, mn.name.length() - 1) + ">";
+					mn.desc = "";
+				}
 				if (mn.invisibleAnnotations != null && mn.invisibleAnnotations.size() > 0) {
 					for (AnnotationNode an : mn.invisibleAnnotations) {
 						String typeName = an.desc.substring(1, an.desc.length() - 1).replace("/", ".");
@@ -60,6 +63,18 @@ public class ASMDriver implements ORMDriver {
 								if (ClassUtils.getOpcode(insnNode.getOpcode()).contains("RETURN")) {
 									mn.instructions.remove(insnNode);
 									break;
+								}
+							}
+
+							for (int i = 0; i < mn.instructions.toArray().length; i++) {
+								AbstractInsnNode insnNode = mn.instructions.get(i);
+								if (insnNode instanceof VarInsnNode) {
+									if (insnNode.getOpcode() == Opcodes.ALOAD) {
+										if (((VarInsnNode) insnNode).var == 1) {
+											((VarInsnNode) insnNode).var--;
+										}
+										break;
+									}
 								}
 							}
 
@@ -119,7 +134,14 @@ public class ASMDriver implements ORMDriver {
 			ClassNode cn = new ClassNode(Opcodes.ASM5);
 			cr.accept(cn, 0);
 
+//			System.out.println("E");
+			String oldDesc = "";
 			for (MethodNode mn : cn.methods) {
+				if (mn.name.equals("<clinit>")) {
+					oldDesc = mn.desc;
+					mn.desc = "";
+				}
+				//System.out.println(mn.name + " - " + mn.desc + " - " + before.containsKey(mn.name + mn.desc));
 				if (before.containsKey(mn.name + mn.desc)) {
 					MethodNode inject = before.get(mn.name + mn.desc);
 
@@ -243,6 +265,10 @@ public class ASMDriver implements ORMDriver {
 					}
 				}
 
+				if (oldDesc.length() > 0) {
+					mn.desc = oldDesc;
+					oldDesc = "";
+				}
 			}
 
 //			cn.accept(new TraceClassVisitor(new PrintWriter(System.out)));
