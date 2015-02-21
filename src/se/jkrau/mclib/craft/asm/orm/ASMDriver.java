@@ -66,7 +66,7 @@ public class ASMDriver implements ORMDriver {
 								}
 							}
 
-							for (int i = 0; i < mn.instructions.toArray().length; i++) {
+							/*for (int i = 0; i < mn.instructions.toArray().length; i++) {
 								AbstractInsnNode insnNode = mn.instructions.get(i);
 								if (insnNode instanceof VarInsnNode) {
 									if (insnNode.getOpcode() == Opcodes.ALOAD) {
@@ -76,7 +76,7 @@ public class ASMDriver implements ORMDriver {
 										break;
 									}
 								}
-							}
+							}*/
 
 							before.put(mn.name + mn.desc, mn);
 						} else if (After.class.getName().equals(typeName)) {
@@ -134,14 +134,12 @@ public class ASMDriver implements ORMDriver {
 			ClassNode cn = new ClassNode(Opcodes.ASM5);
 			cr.accept(cn, 0);
 
-//			System.out.println("E");
 			String oldDesc = "";
 			for (MethodNode mn : cn.methods) {
 				if (mn.name.equals("<clinit>")) {
 					oldDesc = mn.desc;
 					mn.desc = "";
 				}
-				//System.out.println(mn.name + " - " + mn.desc + " - " + before.containsKey(mn.name + mn.desc));
 				if (before.containsKey(mn.name + mn.desc)) {
 					MethodNode inject = before.get(mn.name + mn.desc);
 
